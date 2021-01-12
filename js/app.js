@@ -2,62 +2,89 @@
 
 
 
-var arrayOfBusMall = [];
-var leftBusMallImg = document.getElementById('left_BusMall_img');
-var rightBusMallImg = document.getElementById('right_BusMall_img');
-var centerBusMallImg = document.getElementById('center_BusMall_img');
-var BusMallection = document.getElementById('all_BusMall');
-var trialsleft = 5;
+var arrayOfProducts = [];
+var leftProductImg = document.getElementById('left_product_img');
+var rightProductImg = document.getElementById('right_product_img');
+var middleProductImg = document.getElementById('middle_product_img');
+var productSection = document.getElementById('all_products');
+var trialsleft = 2;
 
 var shownImages = [];
-var BusMallOfList = document.getElementById('BusMallList');
-var BusMallCanvas = document.getElementById('BusMallChart').getContext('2d');
+var productOfList = document.getElementById('productList');
+var productCanvas = document.getElementById('productChart').getContext('2d');
 var button = document.getElementById('button');
+var clearDataBtn = document.getElementById('clearLocalStorage')
 button.style.display = 'none';
+clearDataBtn.style.display = 'none';
 
 
-function BusMall(name, image) {
+function Product(name, image) {
     this.image = image;
     this.name = name;
     this.url = 'images/' + image;
     this.counter = 0;
     this.timeShown = 0;
 
-    arrayOfBusMall.push(this);
+    arrayOfProducts.push(this);
+
+
 }
 
-function renderBusMall(leftImage, centerImage, rightImage) {
-    leftBusMallImg.setAttribute('src', arrayOfBusMall[leftImage].url);
-    arrayOfBusMall[leftImage].timeShown++;
-    rightBusMallImg.setAttribute('src', arrayOfBusMall[rightImage].url);
-    arrayOfBusMall[rightImage].timeShown++;
-    centerBusMallImg.setAttribute('src', arrayOfBusMall[centerImage].url);
-    arrayOfBusMall[centerImage].timeShown++;
+function storeData() {
+
+    localStorage.setItem('product', JSON.stringify(arrayOfProducts));
+
+}
+function clearLocalStorage() {
+
+    localStorage.clear();
+
+    arrayOfProducts = [];
+
+
+}
+
+
+function checkAndRestore() {
+
+    if (localStorage.length > 0) {
+        arrayOfProducts = JSON.parse(localStorage.getItem('product'));
+
+    }
+}
+
+function renderProduct(leftImage, middleImage, rightImage) {
+    leftProductImg.setAttribute('src', arrayOfProducts[leftImage].url);
+    arrayOfProducts[leftImage].timeShown++;
+    rightProductImg.setAttribute('src', arrayOfProducts[rightImage].url);
+    arrayOfProducts[rightImage].timeShown++;
+    middleProductImg.setAttribute('src', arrayOfProducts[middleImage].url);
+    arrayOfProducts[middleImage].timeShown++;
 }
 
 
 function renderChart() {
 
-    var arrayOfBusMallNames = [];
-    var arrayOfBusMallCount = [];
-    var arrayOfBusMallShown = [];
+    var arrayOfProductNames = [];
+    var arrayOfProductCount = [];
+    var arrayOfProductsShown = [];
 
 
-    for (var i = 0; i < arrayOfBusMall.length; i++) {
-        arrayOfBusMallNames.push(arrayOfBusMall[i].name);
-        arrayOfBusMallCount.push(arrayOfBusMall[i].counter);
-        arrayOfBusMallShown.push(arrayOfBusMall[i].timeShown);
+    for (var i = 0; i < arrayOfProducts.length; i++) {
+        arrayOfProductNames.push(arrayOfProducts[i].name);
+        arrayOfProductCount.push(arrayOfProducts[i].counter);
+        arrayOfProductsShown.push(arrayOfProducts[i].timeShown);
 
     }
 
-    var myChart = new Chart(BusMallCanvas, {
+    var myChart = new Chart(productCanvas, {
         type: 'bar',
         data: {
-            labels: arrayOfBusMallNames,
+            labels: arrayOfProductNames,
             datasets: [
                 {
-                    label: '# of BusMall Clicks',
-                    data: arrayOfBusMallCount,
+                    label: '# of Product Clicks',
+                    data: arrayOfProductCount,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -79,7 +106,7 @@ function renderChart() {
                         'rgba(255, 159, 64, 0.2)',
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)'
-                        
+
 
                     ],
                     borderColor: [
@@ -107,8 +134,8 @@ function renderChart() {
                     borderWidth: 1
                 },
                 {
-                    label: 'BusMall Times Shown',
-                    data: arrayOfBusMallShown,
+                    label: 'Product Times Shown',
+                    data: arrayOfProductsShown,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -168,110 +195,107 @@ function renderChart() {
     });
 }
 
-function checkAva (selectedBusMallName) {
+function checkAva(selectedProductName) {
 
     for (var index = 0; index < shownImages.length; index++) {
-        if (shownImages[index].name === selectedBusMallName) {
+        if (shownImages[index].name === selectedProductName) {
             return true;
         }
     }
     return false;
 }
 
-renderChart();
-
-function pickABusMall() {
+function pickAProduct() {
     do {
-        var leftImage = Math.round(Math.random() * (arrayOfBusMall.length - 1))
-        var leftBusMallImgName = arrayOfBusMall[leftImage].name;
+        var leftImage = Math.round(Math.random() * (arrayOfProducts.length - 1))
+        var leftProductImgName = arrayOfProducts[leftImage].name;
 
-    } while (checkAva(leftBusMallImgName));
+    } while (checkAva(leftProductImgName));
 
     do {
-        var centerImage = Math.round(Math.random() * (arrayOfBusMall.length - 1))
-        var centerBusMallImgName = arrayOfBusMall[centerImage].name;
-    } while (centerImage === leftImage || checkAva(centerBusMallImgName));
+        var middleImage = Math.round(Math.random() * (arrayOfProducts.length - 1))
+        var middleProductImgName = arrayOfProducts[middleImage].name;
+    } while (middleImage === leftImage || checkAva(middleProductImgName));
     do {
-        var rightImage = Math.round(Math.random() * (arrayOfBusMall.length - 1))
-        var rightBusMallImgName = arrayOfBusMall[rightImage].name;
-    } while (rightImage === centerImage || rightImage === leftImage || checkAva(rightBusMallImgName));
+        var rightImage = Math.round(Math.random() * (arrayOfProducts.length - 1))
+        var rightProductImgName = arrayOfProducts[rightImage].name;
+    } while (rightImage === middleImage || rightImage === leftImage || checkAva(rightProductImgName));
 
     shownImages = [];
 
-  shownImages.push(
-    arrayOfBusMall[leftImage],
-    arrayOfBusMall[rightImage],
-    arrayOfBusMall[centerImage]
-  )
+    shownImages.push(
+        arrayOfProducts[leftImage],
+        arrayOfProducts[rightImage],
+        arrayOfProducts[middleImage]
+    )
 
-    renderBusMall(leftImage, rightImage, centerImage);
+    renderProduct(leftImage, rightImage, middleImage);
 
 }
 
-function checkBusMall(objectIndicator) {
-    for (var index = 0; index < arrayOfBusMall.length; index++) {
-        if (arrayOfBusMall[index].url === objectIndicator) {
-            arrayOfBusMall[index].counter++;
+function checkProduct(objectIndicator) {
+    for (var index = 0; index < arrayOfProducts.length; index++) {
+        if (arrayOfProducts[index].url === objectIndicator) {
+            arrayOfProducts[index].counter++;
             trialsleft--;
         }
     }
 }
 
-function countBusMall(event) {
+
+function countProduct(event) {
 
     var targetId = event.target.id;
     if (trialsleft !== 0) {
-        if (targetId === 'left_BusMall_img' || targetId === 'right_BusMall_img' || targetId === 'center_BusMall_img') {
+        if (targetId === 'left_product_img' || targetId === 'right_product_img' || targetId === 'middle_product_img') {
             var objectIndicator = event.target.getAttribute('src');
-            checkBusMall(objectIndicator);
-            pickABusMall();
+            checkProduct(objectIndicator);
+            pickAProduct();
         }
 
     } else {
-        BusMallection.removeEventListener('click', countBusMall);
-        console.log(arrayOfBusMall);
+        productSection.removeEventListener('click', countProduct);
+        console.log(arrayOfProducts);
         button.style.display = 'block';
-        
+        clearDataBtn.style.display = 'block';
+
+
     }
 }
 
 
-new BusMall('Bag', 'bag.jpg');
-new BusMall('Banana', 'banana.jpg');
-new BusMall('Bathroom', 'bathroom.jpg');
-new BusMall('Boots', 'boots.jpg');
-new BusMall('Breakfast', 'breakfast.jpg');
-new BusMall('Bubblegum', 'bubblegum.jpg');
-new BusMall('Chair', 'chair.jpg');
-new BusMall('Cthulhu', 'cthulhu.jpg');
-new BusMall('Dog-duck', 'dog-duck.jpg');
-new BusMall('Dragon', 'dragon.jpg');
-new BusMall('Pen', 'pen.jpg');
-new BusMall('Pet Sweep', 'pet-sweep.jpg');
-new BusMall('Scissors', 'scissors.jpg');
-new BusMall('Shark', 'shark.jpg');
-new BusMall('Sweep', 'sweep.png');
-new BusMall('Tauntaun', 'tauntaun.jpg');
-new BusMall('Unicorn', 'unicorn.jpg');
-new BusMall('Usb', 'usb.gif');
-new BusMall('Water Can', 'water-can.jpg');
-new BusMall('Wine Glass', 'wine-glass.jpg');
+new Product('Bag', 'bag.jpg');
+new Product('Banana', 'banana.jpg');
+new Product('Bathroom', 'bathroom.jpg');
+new Product('Boots', 'boots.jpg');
+new Product('Breakfast', 'breakfast.jpg');
+new Product('Bubblegum', 'bubblegum.jpg');
+new Product('Chair', 'chair.jpg');
+new Product('Cthulhu', 'cthulhu.jpg');
+new Product('Dog-duck', 'dog-duck.jpg');
+new Product('Dragon', 'dragon.jpg');
+new Product('Pen', 'pen.jpg');
+new Product('Pet Sweep', 'pet-sweep.jpg');
+new Product('Scissors', 'scissors.jpg');
+new Product('Shark', 'shark.jpg');
+new Product('Sweep', 'sweep.png');
+new Product('Tauntaun', 'tauntaun.jpg');
+new Product('Unicorn', 'unicorn.jpg');
+new Product('Usb', 'usb.gif');
+new Product('Water Can', 'water-can.jpg');
+new Product('Wine Glass', 'wine-glass.jpg');
 
 
 
-pickABusMall();
-BusMallection.addEventListener('click', countBusMall);
+pickAProduct();
+checkAndRestore();
+productSection.addEventListener('click', countProduct);
+clearDataBtn.addEventListener('click', clearLocalStorage);
 
 
 function list(event) {
     event.preventDefault();
     renderChart();
-    var ul = document.createElement("ul");
-    BusMallOfList.appendChild(ul);
-    for (var j = 0; j < arrayOfBusMall.length; j++) {
-        var li = document.createElement("li");
-        li.textContent = arrayOfBusMall[j].name + " had " + arrayOfBusMall[j].counter + " votes, and was seen " + arrayOfBusMall[j].timeShown + " times.";
-        ul.appendChild(li);
-    }
+    storeData();
 }
-button.addEventListener('click', list );
+button.addEventListener('click', list);
