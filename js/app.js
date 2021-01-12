@@ -7,15 +7,14 @@ var leftProductImg = document.getElementById('left_product_img');
 var rightProductImg = document.getElementById('right_product_img');
 var middleProductImg = document.getElementById('middle_product_img');
 var productSection = document.getElementById('all_products');
-var trialsleft = 2;
+var trialsleft =25 ;
 
 var shownImages = [];
 var productOfList = document.getElementById('productList');
 var productCanvas = document.getElementById('productChart').getContext('2d');
 var button = document.getElementById('button');
 var clearDataBtn = document.getElementById('clearLocalStorage')
-button.style.display = 'none';
-clearDataBtn.style.display = 'none';
+
 
 
 function Product(name, image) {
