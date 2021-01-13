@@ -194,6 +194,8 @@ function renderChart() {
     });
 }
 
+// to check if the img has been shown before 
+
 function checkAva(selectedProductName) {
 
     for (var index = 0; index < shownImages.length; index++) {
@@ -203,6 +205,8 @@ function checkAva(selectedProductName) {
     }
     return false;
 }
+
+// check that the same images doesn't show in the same row 
 
 function pickAProduct() {
     do {
@@ -262,6 +266,7 @@ function countProduct(event) {
     }
 }
 
+//adding new objects 
 
 new Product('Bag', 'bag.jpg');
 new Product('Banana', 'banana.jpg');
