@@ -28,8 +28,6 @@ h1 {
 
 }
 
-
-
 p{
     text-align: center;
     font-size: x-large;
@@ -38,11 +36,6 @@ p{
     color: cornflowerblue;
 }
 
-/* canvas {
-    width: 50px;
-    height: 30px;
-    border-style: ridge;
-} */
 
 #productChart{
     border: solid black 3px;
