@@ -20,6 +20,7 @@ div{
 
 h1 {
     background-size: 60px;
+    
     text-align: center;
     background-color: cornflowerblue;
     border:ridge;
@@ -30,10 +31,12 @@ h1 {
 
 p{
     text-align: center;
+    background-color: teal;
+    border-style: groove;
     font-size: x-large;
     margin-right: 80px;
     margin-top :110px;
-    color: cornflowerblue;
+    color:black;
 }
 
 
